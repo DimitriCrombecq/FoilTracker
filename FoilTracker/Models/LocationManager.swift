@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import MapKit
 import SwiftUI
 
 @Observable
@@ -40,10 +41,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         if let points = currentSession?.locationPoints, !points.isEmpty {
             let midpoint = points[points.count / 2]
             let location = CLLocation(latitude: midpoint.latitude, longitude: midpoint.longitude)
-            let geocoder = CLGeocoder()
-            if let placemark = try? await geocoder.reverseGeocodeLocation(location).first {
-                let parts = [placemark.locality, placemark.administrativeArea, placemark.country].compactMap { $0 }
-                currentSession?.locationName = parts.joined(separator: ", ")
+            if let request = MKReverseGeocodingRequest(location: location),
+               let mapItem = try? await request.mapItems.first {
+                currentSession?.locationName = mapItem.addressRepresentations?.cityWithContext
             }
         }
 

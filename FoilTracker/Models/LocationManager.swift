@@ -14,11 +14,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     override init() {
         super.init()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.distanceFilter = 3
+        manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        manager.distanceFilter = 5
         manager.activityType = .otherNavigation
         manager.allowsBackgroundLocationUpdates = true
         manager.pausesLocationUpdatesAutomatically = false
+        manager.showsBackgroundLocationIndicator = true
         authorizationStatus = manager.authorizationStatus
     }
 
@@ -58,7 +59,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard isTracking else { return }
         for location in locations {
-            guard location.horizontalAccuracy >= 0, location.horizontalAccuracy < 20 else { continue }
+            // Accept locations with accuracy up to 65m (typical outdoor GPS)
+            guard location.horizontalAccuracy >= 0, location.horizontalAccuracy < 65 else { continue }
             let point = LocationPoint(location: location)
             currentSession?.locationPoints.append(point)
             currentSpeed = max(location.speed, 0)

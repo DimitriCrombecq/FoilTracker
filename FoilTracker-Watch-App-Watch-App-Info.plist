@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>workout-processing</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>FoilTracker needs your location to track speed and route during sessions.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>FoilTracker uses HealthKit to run workout sessions that keep tracking active on your wrist.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>FoilTracker saves workout data from your foiling sessions.</string>
+</dict>
 </plist>
